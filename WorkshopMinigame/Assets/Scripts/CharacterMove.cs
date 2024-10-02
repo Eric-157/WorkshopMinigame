@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -12,6 +13,9 @@ public class NewBehaviourScript : MonoBehaviour
     public bool isGrounded;
     public Vector3 jumpVector;
     Rigidbody rb;
+    public bool gun = false;
+    public GameObject projectilePrefab;
+    public float horizontalInput;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,9 +31,15 @@ public class NewBehaviourScript : MonoBehaviour
         {
             verticalInput = Input.GetAxis("Vertical");
             transform.Translate(Vector3.right * Time.deltaTime * speed * verticalInput);
+            horizontalInput = Input.GetAxis("Horizontal");
+            transform.Translate(Vector3.forward * Time.deltaTime * speed * -horizontalInput);
             if (jump == true && Input.GetKeyDown(KeyCode.Space) && isGrounded)
             {
                 rb.AddForce(jumpVector * jumpForce, ForceMode.Impulse);
+            }
+            if (gun == true && Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                Instantiate(projectilePrefab, transform.position - new Vector3(0.0f, 0.0f, 1.0f), projectilePrefab.transform.rotation);
             }
         }
     }
@@ -41,9 +51,19 @@ public class NewBehaviourScript : MonoBehaviour
             alive = false;
             Destroy(other.gameObject);
         }
+        if (other.tag == "TallCar")
+        {
+            alive = false;
+            Destroy(other.gameObject);
+        }
         if (other.tag == "Jump")
         {
             jump = true;
+            Destroy(other.gameObject);
+        }
+        if (other.tag == "Gun")
+        {
+            gun = true;
             Destroy(other.gameObject);
         }
         
