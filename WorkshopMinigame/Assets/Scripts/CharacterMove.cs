@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class NewBehaviourScript : MonoBehaviour
 {
@@ -47,14 +49,17 @@ public class NewBehaviourScript : MonoBehaviour
     // Kills the chicken on collision with cars
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Car") {
+        if (other.tag == "Car")
+        {
             alive = false;
             Destroy(other.gameObject);
+            SceneManager.LoadScene("SampleScene");
         }
         if (other.tag == "TallCar")
         {
             alive = false;
             Destroy(other.gameObject);
+            SceneManager.LoadScene("SampleScene");
         }
         if (other.tag == "Jump")
         {
@@ -66,7 +71,7 @@ public class NewBehaviourScript : MonoBehaviour
             gun = true;
             Destroy(other.gameObject);
         }
-        
+
     }
     private void OnTriggerStay(Collider other)
     {
